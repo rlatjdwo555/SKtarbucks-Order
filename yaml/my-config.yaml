@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cafe-config
-  namespace: mycafe
+  namespace: skcc04-ns
 data:
   api.cafe.url: http://CafeManage:8080
-  #alarm.prefix: Hello
+  #alarm.prefix: Hello 
