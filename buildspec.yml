@@ -79,11 +79,11 @@ phases:
                   ports:
                     - containerPort: 8080
                   env:
-                    - name: api.hospital.url
+                    - name: api.cafe.url
                       valueFrom:
                         configMapKeyRef:
                           name: my-config
-                          key: api.hospital.url
+                          key: api.cafe.url
                   imagePullPolicy: Always
                   readinessProbe:
                     httpGet:
