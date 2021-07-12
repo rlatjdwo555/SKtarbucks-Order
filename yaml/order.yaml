@@ -50,7 +50,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ordermanage
-  namespace: skcc-ns
+  namespace: skcc04-ns
   labels:
     app: ordermanage
 spec:
