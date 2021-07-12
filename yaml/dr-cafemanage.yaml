@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: dr-cafemanage
-  namespace: skcc-ns04
+  namespace: skcc04-ns
 spec:
   host: cafemanage
   trafficPolicy:
