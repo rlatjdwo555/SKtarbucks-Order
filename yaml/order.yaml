@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ordermanage
-  namespace: skcc-ns
+  namespace: skcc04-ns
   labels:
     app: ordermanage
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: ordermanage
-          image: 879772956301.dkr.ecr.ap-northeast-1.amazonaws.com/user04-ordermanage:latest
+          image: 879772956301.dkr.ecr.ap-northeast-1.amazonaws.com/user04-order:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
