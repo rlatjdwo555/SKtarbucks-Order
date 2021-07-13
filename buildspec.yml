@@ -105,3 +105,12 @@ phases:
 cache:
   paths:
     - '/root/.m2/**/*'
+
+--- 
+apiVersion: v1 
+kind: ConfigMap
+metadata:
+  name: my-config
+  namespace: skcc04-ns
+data:
+  api.cafe.url: http://CafeManage:8080
