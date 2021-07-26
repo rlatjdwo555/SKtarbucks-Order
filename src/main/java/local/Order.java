@@ -29,6 +29,7 @@ public class Order {
         if(cafe.getStock()-count >= 0){
           this.setCafeId(cafeId);
           this.setCafeNm(cafe.getCafeNm());
+          this.setPrice(cafe.getPCnt()*cafe.getPrice());
           this.setCustNm(custNm);
           this.setStatus("REQUESTED");
         }
