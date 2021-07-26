@@ -62,7 +62,7 @@ public class PolicyHandler{
         orderRepository.findById(paymentCancelled.getOrderId())
         .ifPresent(
             order->{
-                order.setStatus("PAYMENT_CANCELED");
+                order.setStatus("CANCELED");
                 orderRepository.save(order);
             }
         );     
