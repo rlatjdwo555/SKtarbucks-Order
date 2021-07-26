@@ -4,10 +4,12 @@ public class Canceled extends AbstractEvent {
 
     private Long id;
     private Long cafeId;
-    private String chkDate;
+    private int price;
+    private int count;
     private String custNm;
     private String status;
     private String cafeNm;
+    private String orderType;
 
     public Long getId() {
         return id;
@@ -16,6 +18,7 @@ public class Canceled extends AbstractEvent {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Long getCafeId() {
         return cafeId;
     }
@@ -23,13 +26,7 @@ public class Canceled extends AbstractEvent {
     public void setCafeId(Long cafeId) {
         this.cafeId = cafeId;
     }
-    public String getChkDate() {
-        return chkDate;
-    }
 
-    public void setChkDate(String chkDate) {
-        this.chkDate = chkDate;
-    }
     public String getCustNm() {
         return custNm;
     }
@@ -44,11 +41,36 @@ public class Canceled extends AbstractEvent {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public String getCafeNm() {
         return cafeNm;
     }
 
+    public void setOrderType(String orderType){
+        this.orderType = orderType;
+    }
+
+    public String getOrderType(){
+        return orderType;
+    }
+
     public void setCafeNm(String cafeNm) {
         this.cafeNm = cafeNm;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setPrice(int price){
+        this.price = price;
+    }
+
+    public int getPrice(){
+        return price;
     }
 }

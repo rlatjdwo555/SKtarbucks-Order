@@ -1,10 +1,9 @@
-
 package local;
 
-public class RequestCompleted extends AbstractEvent {
-
+public class DeliveryCompleted extends AbstractEvent{
+    
     private Long id;
-    private Long cafeId;
+    private Long orderId;
     private String cafeNm;
     private String custNm;
     private String status;
@@ -16,13 +15,14 @@ public class RequestCompleted extends AbstractEvent {
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getCafeId() {
-        return cafeId;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setCafeId(Long cafeId) {
-        this.cafeId = cafeId;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
+
     public String getCafeNm() {
         return cafeNm;
     }
@@ -37,11 +37,13 @@ public class RequestCompleted extends AbstractEvent {
     public void setCustNm(String custNm) {
         this.custNm = custNm;
     }
-    public String getStatus() {
+
+    public String getDeliveryStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setDeliveryStatus(String status) {
         this.status = status;
     }
+
 }

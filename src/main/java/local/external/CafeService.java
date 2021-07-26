@@ -1,4 +1,3 @@
-
 package local.external;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Date;
 
-@FeignClient(name="CafeManage", url="${api.cafe.url}")//,fallback = CafeServiceFallback.class)
+@FeignClient(name="CafeManage", url="${api.cafe.url}")
 public interface CafeService {
 
-    @RequestMapping(method= RequestMethod.PUT, value="/cafes/{cafeId}", consumes = "application/json")
-    public void orderRequest(@PathVariable("cafeId") Long cafeId, @RequestBody Cafe cafe);
+    @RequestMapping(method= RequestMethod.GET, value="/cafes/{cafeId}", consumes = "application/json")
+    public Cafe getCafeStatus(@PathVariable("cafeId") Long cafeId);
 
 }

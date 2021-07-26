@@ -35,19 +35,68 @@ public class PolicyHandler{
             }
         }
     }
+    
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverProductionCompleted_RequestComplete(@Payload ProductionCompleted productionCompleted){
+    public void wheneverProductionCompleted_ChangeOrderStatus(@Payload ProductionChanged productionChanged){
 
-        if(productionCompleted.isMe()){
-            System.out.println("##### listener RequestComplete : " + productionCompleted.toJson());
+        if(!productionChanged.isMe()) return;
+        
+        System.out.println("##### listener ProductionChanged : " + productionChanged.toJson());
 
-            Optional<Order> temp = orderRepository.findById(productionCompleted.getOrderId());
-            Order target = temp.get();
-            System.out.println("##### RequestComplete : " + target.toString());
-            target.setCafeId(Long.parseLong(productionCompleted.getCafeId()));
-            target.setStatus(productionCompleted.getStatus());
-            orderRepository.save(target);
-        }
+        orderRepository.findById(productionChanged.getOrderId())
+        .ifPresent(
+            order->{
+                order.setStatus(productionChanged.getStatus());
+                orderRepository.save(order);
+            }
+        ); 
     }
 
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverPaymentCancelled_CanceledOrder(@Payload PaymentCancelled paymentCancelled){
+
+        if(!paymentCancelled.isMe()) return;
+        
+        System.out.println("##### listener PaymentCancelled : " + paymentCancelled.toJson());
+
+        orderRepository.findById(paymentCancelled.getOrderId())
+        .ifPresent(
+            order->{
+                order.setStatus("PAYMENT_CANCELED");
+                orderRepository.save(order);
+            }
+        );     
+    }
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverDeliveryStarted_ChangeOrderStatus(@Payload DeliveryStarted deliveryStarted){
+
+        if(!deliveryStarted.isMe()) return;
+        
+        System.out.println("##### listener DeliveryStarted : " + deliveryStarted.toJson());
+
+        orderRepository.findById(deliveryStarted.getOrderId())
+        .ifPresent(
+            order->{
+                order.setStatus("DELIVERY_IN_PROGRESS");
+                orderRepository.save(order);
+            }
+        ); 
+    }
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverDeliveryCompleted_ChangeOrderStatus(@Payload DeliveryCompleted deliveryCompleted){
+
+        if(!deliveryCompleted.isMe()) return;
+        
+        System.out.println("##### listener DeliveryCompleted : " + deliveryCompleted.toJson());
+
+        orderRepository.findById(deliveryCompleted.getOrderId())
+        .ifPresent(
+            order->{
+                order.setStatus("DELIVERY_COMPLETED");
+                orderRepository.save(order);
+            }
+        ); 
+    }
 }

@@ -11,27 +11,39 @@ public class Order {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private Long cafeId;
-    private String chkDate;
+    private int count;
+    private int price;
     private String custNm;
-    private String status;
     private String cafeNm;
+    private String status;
+    private String orderType;
+
+    @PrePersist
+    public void onPrePersist() throws Exception{
+        // 주문가능 수량 상태 확인 ( Req / Res : 동기 방식 호출)
+        local.external.Cafe cafe = new local.external.Cafe();
+        cafe = OrderManageApplication.applicationContext.getBean(local.external.CafeService.class)
+        .getCafeStatus(cafeId);
+
+        // 주문 수량 여부에 따라 처리
+        if(cafe.getStock()-count >= 0){
+          this.setCafeId(cafeId);
+          this.setCafeNm(cafe.getCafeNm());
+          this.setCustNm(custNm);
+          this.setStatus("REQUESTED");
+        }
+        else{
+            throw new Exception("음료 재료 소진으로 주문이 불가합니다.");
+        }
+
+    }
 
     @PostPersist
-    public void onPostPersist(){;
-
-        // 주문 요청함 ( Req / Res : 동기 방식 호출)
-        local.external.Cafe cafe = new local.external.Cafe();
-        cafe.setCafeId(getCafeId());
-        // mappings goes here
-        OrderManageApplication.applicationContext.getBean(local.external.CafeService.class)
-            .orderRequest(cafe.getCafeId(),cafe);
-
-
+    public void onPostPersist(){
         Requested requested = new Requested();
         BeanUtils.copyProperties(this, requested);
         requested.publishAfterCommit();
-    }
-
+    }  
 
     @PostUpdate
     public void onPostUpdate(){
@@ -43,20 +55,6 @@ public class Order {
             BeanUtils.copyProperties(this, canceled);
             canceled.publishAfterCommit();
         }
-        else if("FORCE_CANCELED".equals(getStatus())){
-            ForceCanceled forceCanceled = new ForceCanceled();
-            BeanUtils.copyProperties(this, forceCanceled);
-            forceCanceled.publishAfterCommit();
-        }
-        else if("REQUEST_COMPLETED".equals(getStatus())){
-            System.out.println(getStatus());
-            System.out.println("## REQ Info : " + this.getCafeId());
-            System.out.println("## REQ Info : " + this.getCafeId());
-            RequestCompleted requestCompleted = new RequestCompleted();
-            BeanUtils.copyProperties(this, requestCompleted);
-            requestCompleted.publishAfterCommit();
-        }
-
     }
 
 
@@ -68,6 +66,7 @@ public class Order {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Long getCafeId() {
         return cafeId;
     }
@@ -75,13 +74,7 @@ public class Order {
     public void setCafeId(Long cafeId) {
         this.cafeId = cafeId;
     }
-    public String getChkDate() {
-        return chkDate;
-    }
 
-    public void setChkDate(String chkDate) {
-        this.chkDate = chkDate;
-    }
     public String getCustNm() {
         return custNm;
     }
@@ -89,6 +82,7 @@ public class Order {
     public void setCustNm(String custNm) {
         this.custNm = custNm;
     }
+
     public String getStatus() {
         return status;
     }
@@ -96,6 +90,7 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public String getCafeNm() {
         return cafeNm;
     }
@@ -104,7 +99,28 @@ public class Order {
         this.cafeNm = cafeNm;
     }
 
+    public void setOrderType(String orderType){
+        this.orderType = orderType;
+    }
 
+    public String getOrderType(){
+        return orderType;
+    }
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setPrice(int price){
+        this.price = price;
+    }
+
+    public int getPrice(){
+        return price;
+    }
 
 }

@@ -1,4 +1,3 @@
-
 package local.external;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class CafeServiceFallback implements CafeService {
 
     @Override
-    public void orderRequest(Long cafeId, Cafe cafe) {
+    public Cafe getCafeStatus(Long cafeId){
         System.out.println("Circuit breaker has been opened. Fallback returned instead.");
+        return null;
     }
 }
